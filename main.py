@@ -9,7 +9,7 @@
     # nome em maísculo ou minúsculo, espaços, acentos, 
   # chamar os menus() dentro das match cases de resposta
     
-
+  
   TODO implementações:
   1 [Consultar trechos x modalidade]
         -INPUT: nome de duas cidades e a modalidade(porte);
@@ -51,7 +51,6 @@ def cabeçalho(titulo): # cria uma função de cabeçalho visual com título
     print(separador())
     print(titulo.center(42))
     print(separador())
-
 
 def menu(lista):
     cabeçalho('MENU PRINCIPAL')
@@ -95,11 +94,8 @@ def resposta(num):
               print(separador())
               print('ERRO: digite uma opção válida')
               
-    
-        
 resposta(int(input('Digite uma opção: ')))
 print(separador())
-
 
 while True: 
     try:
@@ -108,4 +104,7 @@ while True:
           print("O valor deve ser um número inteiro")
     except KeyError:
           print("Opção inválida")
+
+
+
 
