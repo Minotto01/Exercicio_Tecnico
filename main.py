@@ -1,4 +1,4 @@
-from menu import * 
+from modulos_menu import * # importei o modulo menu do repositorio com * para não precisar digitar menu. antes de cada função
 import pandas as pd # Para manipulação de dados do arquivo CSV nas funções do sistema
 
 

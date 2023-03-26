@@ -3,11 +3,11 @@
   # nota: o indice da linha que tem o valor ZERO é a cidade daquela linha
   # linha é uma lista
   # criar def caminhão
-  # criar def menu
+# criar def menu 
   # TRATAMENTO DE STRING nos inputs das cidades
     # Real com vírgula
     # nome em maísculo ou minúsculo, espaços, acentos, 
-  # chamar os menus() dentro das match cases de resposta
+
     
   
   TODO implementações:
@@ -36,3 +36,4 @@
         se não ouver cadastros avisar
         # menu_transportes_cadastrados()  lista de informações 
 '''
+  
