@@ -34,6 +34,7 @@
         CUSTO MÉDIO POR PRODUTO(CUSTO POR QUANTIDADE?); CUSTO TOTAL POR TRECHO; CUSTO TOTAL
         PARA CADA MODALIDADE; TOTAL DE VEÍCULOS; TOTAL DE ITENS, 
         se não ouver cadastros avisar
+        # menu_transportes_cadastrados()  lista de informações 
 '''
 
 
@@ -68,6 +69,8 @@ print(separador())
 
 ### AREA DE RESPOSTA DO USUÁRIO ###
 
+
+
 def resposta(num):
     match num: # match case para simplificar e diminuir quantidade de ifs 
             case 1: # Opção 1 CONSULTA
@@ -82,18 +85,19 @@ def resposta(num):
             case 4: # Opção 4 ENCERRAR SESSÃO
               confirmar_saida = input('Tem certeza que deseja sair? (S/N): ').lower()
               if confirmar_saida == 's':
-                  print('Ok! Obrigado, até logo e volte sempre')
+                print(separador())
+                print('Até logo, volte sempre!')
               elif confirmar_saida == 'n':
-                  menu(menu_inicio) 
-                  print(separador())
-                  resposta(int(input('Digite uma opção: ')))
-                  print(separador())
+                menu(menu_inicio) 
+                print(separador())
+                resposta(int(input('Digite uma opção: ')))
+                print(separador())
               else:
-                  pass
+                print('Não entendi, digite uma opção válida! (S/N):')
             case outro:
               print(separador())
               print('ERRO: digite uma opção válida')
-              
+           
 resposta(int(input('Digite uma opção: ')))
 print(separador())
 
