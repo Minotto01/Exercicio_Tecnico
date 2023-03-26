@@ -11,12 +11,12 @@ def cabeçalho(titulo): # cria uma função de cabeçalho visual para título
 def verif_int(resposta):
   while True: 
       try:
-          n = int(input(resposta))
+          num_int = int(input(resposta))
       except(ValueError, TypeError):
             cabeçalho("Por favor, digite uma opção válida.")
             continue
       else:
-         return n
+         return num_int
 
 
 def menu(lista, titulo):
