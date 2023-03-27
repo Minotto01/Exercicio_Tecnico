@@ -35,5 +35,5 @@
         PARA CADA MODALIDADE; TOTAL DE VEÍCULOS; TOTAL DE ITENS, 
         se não ouver cadastros avisar
         # menu_transportes_cadastrados()  lista de informações 
+
 '''
-  
