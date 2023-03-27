@@ -19,7 +19,6 @@ def verif_int(resposta):
          return num_int
 
 
-
 def menu(lista, titulo):
     cabeçalho(titulo)
     num = 1
@@ -31,7 +30,6 @@ def menu(lista, titulo):
     return opc_do_usuario
 
 
-
 def verificar_registro(registro):
     try:
         abrir = open(registro, 'rt')
@@ -41,6 +39,7 @@ def verificar_registro(registro):
     else:
         return True
 
+
 def criar_registro(registro):
     try:
         abrir = open(registro, 'wt+')
@@ -49,6 +48,7 @@ def criar_registro(registro):
         print('Não foi possível criar um registro')
     else:
         print('Registro criado')
+
 
 def ler_registro(registro):
     try:
