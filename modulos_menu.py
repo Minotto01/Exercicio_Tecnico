@@ -1,10 +1,10 @@
-def separador(tamanho = 42): # cria uma função de rodapé visual
+def separador(tamanho = 50): # cria uma função de rodapé visual
     return '=' * tamanho
 
 
 def cabeçalho(titulo): # cria uma função de cabeçalho visual para título
     print(separador())
-    print(titulo.center(42))
+    print(titulo.center(50))
     print(separador())
 
 
@@ -13,7 +13,7 @@ def verif_int(resposta):
       try:
           num_int = int(input(resposta))
       except(ValueError, TypeError):
-            cabeçalho("Por favor, digite uma opção válida.")
+            cabeçalho("Por favor, digite um número inteiro válido.")
             continue
       else:
          return num_int
@@ -53,9 +53,8 @@ def criar_registro(registro):
 def ler_registro(registro):
     try:
         abrir = open(registro, 'rt')
-        abrir.close()
     except:
         print('Não foi possível ler a tabela')
     else:
-        cabeçalho('Registro de cadastros')
         print(abrir.read())
+
