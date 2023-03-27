@@ -19,6 +19,7 @@ def verif_int(resposta):
          return num_int
 
 
+
 def menu(lista, titulo):
     cabeçalho(titulo)
     num = 1
@@ -58,10 +59,3 @@ def ler_registro(registro):
     else:
         cabeçalho('Registro de cadastros')
         print(abrir.read())
-
-
-           
-
-
-
-
