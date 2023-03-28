@@ -1,10 +1,10 @@
-def separador(tamanho = 50): # cria uma função de rodapé visual
+def separador(tamanho = 55): # cria uma função de rodapé visual
     return '=' * tamanho
 
 
 def cabeçalho(titulo): # cria uma função de cabeçalho visual para título
     print(separador())
-    print(titulo.center(50))
+    print(titulo.center(55))
     print(separador())
 
 
@@ -15,6 +15,9 @@ def verif_int(resposta):
       except(ValueError, TypeError):
             cabeçalho("Por favor, digite um número inteiro válido.")
             continue
+      except KeyboardInterrupt:
+          print('Nenhum número digitado')
+          return False
       else:
          return num_int
 
@@ -58,3 +61,18 @@ def ler_registro(registro):
     else:
         print(abrir.read())
 
+def matriz(lista, a, b):
+    dist = (lista[a])[b]
+    return dist
+
+matriz()
+
+def formatar_cidades(cidades, cidades_por_linha):
+    string_cidades = ""
+    for i, cidade in enumerate(cidades):
+        string_cidades += f"[{i}] - {cidade}, "
+        if (i+1) % cidades_por_linha == 0:
+            string_cidades = string_cidades.rstrip(", ")
+            string_cidades += "\n"
+    string_cidades = string_cidades.rstrip(", \n")
+    return string_cidades
