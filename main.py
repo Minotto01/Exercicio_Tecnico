@@ -1,8 +1,12 @@
 from modulos_menu import * # importei o modulo menu do repositorio com * para não precisar digitar menu. antes de cada função
-import pandas as pd # Para manipulação de dados do arquivo CSV nas funções do sistema
 from time import sleep
+import csv
 
-distancias = pd.read_csv('DNIT-distancias.csv', sep=';') # Lê o arquivo csv
+with open('DNIT-distancias.csv', 'r') as tabela:
+    ler = csv.reader(tabela, delimiter=';')
+    lista_linhas = list(ler)
+
+cidades = lista_linhas[0]
 
 registro = 'tabela_registro.txt'
 if not verificar_registro(registro):
@@ -13,25 +17,33 @@ while True: # loop menu
     match menu_principal:
         case 1:
             cabeçalho('CONSULTAR UM TRANSPORTE')
-            # mostrar trechos disponiveis
-            # escolher 2
-            # escolher modalidade
-            # distancia, custo total, se não existir,
-            print('Digite o nome das cidades de partida e destino'.center(50))
-            print('Cidades disponíveis: '.center(50))
-            cabeçalho('MODALIDADES\nCaminhão de PEQUENO porte, Caminhão de MÉDIO porte e Caminhão de GRANDE porte')
-            partida = input('Digite a cidade de partida: ')
-            destino = input('Digite a cidade de destino: ')
-            porte = input('Digite o porte do caminhão: ')
-            lista_cidades = [] # usar o csv
-
-            if partida or destino not in lista_cidades:
-                print('Desculpe, essa cidade não está disponível ou não existe.')
+            print('Digite o número correspondente das cidades de \npartida e destino, cidades disponíveis:'.center(55))
+            print(formatar_cidades(cidades, 3))
+            print(separador())
+            partida = verif_int('Digite o número da cidade de partida: ')
+            destino = verif_int('Digite o número da cidade de destino: ')
+            if 0 <= partida and destino < len(cidades):
+                print('Você selecionou da cidade de', cidades[partida], 'até', cidades[destino])
             else:
-               print(f'De {partida} para {destino}, utilizando um caminhão de {porte} porte, a distância é de xkm e o \n custo de R$x')
-               break
+                print('Desculpe, uma das cidades que você digitou não está disponível ou não existe.')
+            print(separador())
+            print('Selecione o porte do caminhão a realizar o transporte:')
+            lista_porte = ['Pequeno porte', 'Médio porte', 'Grande porte']
+            print(formatar_cidades(lista_porte, 3))
+            print(separador())
+            porte = verif_int('Digite o número do porte do caminhão: ')
+            distancia = matriz(lista_linhas, partida + 1, destino) # +1 pq a lista de linhas não começa do 0
+
+            # definir preço do porte e multiplicar pela distancia para obter o custo
+
+            if 0 <= porte < len(lista_porte):
+                print(f'De {cidades[partida]} para {cidades[destino]}, utilizando um caminhão de {lista_porte[porte].lower()}, a distância é de {distancia}km e o \n custo de R$')
+            else:
+                print('Por favor, digite uma opção válida de porte') 
+            #criar opções de voltar para o menu ou recomeçar
         case 2:
             cabeçalho('CADASTRAR UM TRANSPORTE') 
+        # VER OUTRAS OPÇÕES DE IMPLEMENTAÇÃO
         # receber 2 ou mais cidades e 1 ou mais itens, responder o trajeto total e caminhão mais adequado
         # custo por trecho e total
             sleep(1.5)
@@ -61,11 +73,11 @@ while True: # loop menu
             print(itens)
             print(trajeto)
 
-            break
+            
         case 3:
             cabeçalho('REGISTRO DE TRANSPORTES')
             ler_registro(registro)
-            break
+            
         case 4:
             confirm = input('Tem certeza que deseja sair? (S/N) ').lower()
             match confirm:
