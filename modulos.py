@@ -82,9 +82,13 @@ def ler_registro(registro):
 
 
 # retorna a distancia de uma matriz das cidades do arquivo CSV
+# lista de listas
+# a = indice da cidade linha INT +1
+# b = distancia, que esta no indice cidade coluna INT
 def matriz(lista, a, b):
-    dist = (lista[a])[b]
+    dist = lista[a][b]
     return dist
+
 
 
 # cria um loop para enumerar todas cidades com seu indice em uma string

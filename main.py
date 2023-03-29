@@ -26,7 +26,11 @@ while True: # loop para implementar funções as opções do menu
                         partida = verif_int('Digite o número da cidade de partida: ')
                         destino = verif_int('Digite o número da cidade de destino: ')
                         print(separador())
-                        if 0 <= partida and destino < len(cidades): # se partida E destino estão dentro da lista cidades
+                        if partida == destino:
+                            print('Desculpe, mas só fazemos transportes intermunicipais.')
+                            print('Digite duas cidades diferentes.')
+                            return True
+                        elif 0 <= partida and destino < len(cidades): # se partida E destino estão dentro da lista cidades
                             print('Você selecionou da cidade de', cidades[partida], 'até', cidades[destino])
                             print(separador())
                             break
@@ -38,26 +42,25 @@ while True: # loop para implementar funções as opções do menu
                         continue
             
                 print('Selecione o porte do caminhão a realizar o transporte:')
-                lista_porte = ['PEQUENO porte', 'MÉDIO porte', 'GRANDE porte']
+                lista_porte = ['PEQUENO porte (Capacidade: 1 Tonelada)', 'MÉDIO porte (Capacidade: 4 Tonelada)', 'GRANDE porte (Capacidade: 10 Tonelada)']
                 preço_porte = [4.87, 11.92, 27.44] # preço por km rodado
-                print(formatar_cidades(lista_porte, 3))
+                print(formatar_cidades(lista_porte, 1))
                 print(separador())
                 porte_válido = False
                 while not porte_válido:
                     porte = verif_int('Digite o número do porte do caminhão: ')
                     distancia = matriz(lista_linhas, partida + 1, destino) # +1 pq a lista de linhas não começa do 0
-
                     print(separador())
-                    
                     if 0 <= porte < len(lista_porte):
-                        cabeçalho(f'De {cidades[partida]} para {cidades[destino]}, utilizando um caminhão de \n{lista_porte[porte].lower()}, a distância é de {distancia}km e o custo de R${int(distancia)/preço_porte[porte]:.2f}'.center(60))
+                        print(f'De {cidades[partida]} para {cidades[destino]}, utilizando um caminhão de \n{lista_porte[porte].lower()}, a distância é de\n{distancia}km e o custo de R${int(distancia)/preço_porte[porte]:.2f}!'.center(60))
                         porte_válido = True
                     else:
                         print('Por favor, digite uma opção válida de porte.') 
                         print(separador())    
                 
             consulta()
-            sleep(1)
+            print('Por Favor Aguarde')
+            sleep(3)
             mini_menu1 = menu(['Voltar ao menu principal', 'Fazer uma nova consulta', 'Encerrar sessão'], 'O QUE DESEJA FAZER AGORA?')
             match mini_menu1:
                 case 1:
@@ -122,10 +125,10 @@ while True: # loop para implementar funções as opções do menu
                         trajeto_do_cadastro.append(cidades[origem_indice]) # coloca a origem no indice 0 
 
                         for i in range(1, n_cidades): # pede o numero da proxima cidade 'n_cidade menor origem[0]' vezes
-                            cidades_restantes = verif_int('Digite o número correspondente da próxima cidade: ')
+                            cidades_restantes = verif_int('Digite o número correspondente da PRÓXIMA cidade: ')
                             trajeto_do_cadastro.append(cidades[cidades_restantes])
 
-                        # LEVAR O TRAJETO DO CADASTRO PARA A TABELA_REGISTRO
+                        
                         #  informações dentro do registro (isso eu posso deixar no main e puxar do registro)
                         
                         # abre o arquivo do registro e escreve uma linha com uma  string vazia
@@ -134,12 +137,12 @@ while True: # loop para implementar funções as opções do menu
                             # escreve no arquivo item peso e quantidade como Header do csv
                             cabeçalho_registro = ['Trajeto', 'Cliente','Item', 'Peso', 'Quantidade']
                             registrar = csv.DictWriter(tabela_registro, fieldnames=cabeçalho_registro)
-
+                            analisar_registro = csv.reader(tabela_registro)
                             registrar.writeheader()
 
                             # variavel para identificar de quem é o transporte
                             # fora do loop para registrar varios itens no mesmo nome
-                            cliente = input('Digite seu nome ou o nome da empresa que representa: ')
+                            cliente = input('Digite SEU NOME ou o NOME DA EMPRESA que representa: ')
                             # loop para registrar os itens quantas vezes o usuário quiser
                             while True:
                                 try:
@@ -151,44 +154,99 @@ while True: # loop para implementar funções as opções do menu
 
                                 # escreve a variavel na sua respectiva coluna
                                 registrar.writerow({'Trajeto': trajeto_do_cadastro, 'Cliente': cliente,'Item': item, 'Peso': peso, 'Quantidade': quantidade})
+                                
 
                                 continuar = menu(['Sim, adicionar mais um item', 'Não, finalizar registro'], 'Deseja registrar mais algum item ao transporte?')
                                 match continuar:
                                     case 1: # continua o loop de adicionar itens
                                         continue
-                                    case 2: # sai do registro
+                                    case 2: # finalizar cadastro
+                                        matrizes = []
+                                        for i in range(len(trajeto_do_cadastro)-1):
+                                            trajetos = [trajeto_do_cadastro[i], trajeto_do_cadastro[i+1]]
+                                            matrizes.append(trajetos)
+                                        distancias = []
+                                        for i in range(len(matrizes)):
+                                            trajeto = matrizes[i]
+                                            y = trajeto[0]
+                                            x = trajeto[1]
+                                            distancia = matriz(lista_linhas, cidades.index(y) + 1, cidades.index(x))
+                                            distancias.append(distancia)
+                                            y = x      
+                                        cabeçalho('REGISTRADO COM SUCESSO')
+                                        print(f'O trajeto do registro é {trajeto_do_cadastro}, a distância a ser percorrida é {sum(distancias)}km, para transporte dos produtos: {item}, será necessário utilizar CAMINHÃO, para um gasto mínimo por km rodado. O valor total é VALOR TOTAL sendo o custo médio VALOR TOTAL/INDICE')    
+                                    case outro: # digite até estar certo
+                                        cabeçalho('ERRO: opção inválida seu cadastro foi salvo, tente novamente')
                                         break
-
-                            #TODO volta aqui depois!!! adicionar opções finais
-                        
                     registrar()
-                        
+                    mini_menu2 = menu(['Voltar ao menu principal', 'Encerrar sessão'], 'O QUE DESEJA FAZER AGORA?')
+                    match mini_menu2:
+                        case 1:
+                            continue
+                        case 2:
+                            confirm = input('Tem certeza que deseja sair? (S/N) ').lower()
+                            if confirm == 's':
+                                cabeçalho('Que pena! Até logo, volte sempre!')
+                                break
+                            elif confirm == 'n':
+                                continue
+                            else: # caso o usuario digite algo diferente de 's' ou 'n'
+                                valido = False
+                                while not valido: #loop continua em quanto for diferente de 's' ou 'n'
+                                    confirm2 = input('Não entendi, por favor digite (S/N): ').lower()
+                                    match confirm2: 
+                                        case 's':
+                                            cabeçalho('Que pena! Até logo, volte sempre!')
+                                            break
+                                        case 'n':
+                                            valido = True
+                                        case outro:
+                                            valido = False
+                                if  confirm2 == 's': # se confirm2 for 's' fecha o programa
+                                    break
+                                else: # se for 'n' reinicia
+                                    continue
                 case 2: # volta para o menu
                     continue
+            continue
         case 3:
-            # verifica se existe o arquivo registro, se não existir cria o arquivo no repositório
-            registro = 'tabela_registro.csv'
-            if not verificar_registro(registro):
-                criar_registro(registro)
-
             # abre o arquivo com with as para abrir, usar e fechar automaticamente;
-            '''Usa o comando dictreader do csv e um loop para preencher a lista_trajetos 
-               com as listas da coluna Trajetos da tabela_registro.csv, preenchendo a 
-               função menu() com as opções sendo os trajetos registrados'''
-            with open('tabela_registro.csv', 'r') as tabela_registro:
-                leitura = csv.DictReader(tabela_registro, delimiter=',')
-                lista_trajetos = []
-                lista_cliente = []
-                for col in leitura:
-                    lista_cliente.append(col['Cliente'])
-                
-                menu_registro = menu(lista_cliente, 'REGISTRO DE TRANSPORTES')
-                
-                # mostrar registros numerados com todas informações que pede;
-                # ler tabela registro se tabela_registro estiver vazia ou não existir
-                # printar não há registros disponíveis criar registro? registrar() 
+            try:
+                with open('tabela_registro.csv', 'r') as tabela_registro:
+                    leitura = csv.reader(tabela_registro)
 
-            break
+                    for linhas in leitura:
+                        print(linhas)
+            except:
+                print(separador())
+                print('Ainda não há um registro para ser acessado'.center(60))
+                continuar = menu(['Voltar ao menu', 'Encerrar sessão',], 'Volte ao menu para criar um registro')
+                match continuar:
+                    case 1:
+                        continue
+                    case 2:
+                        confirm = input('Tem certeza que deseja sair? (S/N) ').lower()
+            if confirm == 's':
+                cabeçalho('Que pena! Até logo, volte sempre!')
+                break
+            elif confirm == 'n':
+                continue
+            else: # caso o usuario digite algo diferente de 's' ou 'n'
+                valido = False
+                while not valido: #loop continua em quanto for diferente de 's' ou 'n'
+                    confirm2 = input('Não entendi, por favor digite (S/N): ').lower()
+                    match confirm2: 
+                        case 's':
+                            cabeçalho('Que pena! Até logo, volte sempre!')
+                            break
+                        case 'n':
+                            valido = True
+                        case outro:
+                            valido = False
+                if  confirm2 == 's': # se confirm2 for 's' fecha o programa
+                    break
+                else: # se for 'n' reinicia
+                    continue
         case 4:
             confirm = input('Tem certeza que deseja sair? (S/N) ').lower()
             if confirm == 's':
