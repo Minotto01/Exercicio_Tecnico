@@ -93,7 +93,7 @@ def matriz(lista, a, b):
 
 # cria um loop para enumerar todas cidades com seu indice em uma string
 # da a opção de escolher quantas cidades vão por linha no terminal
-def formatar_cidades(cidades, cidades_por_linha):
+def formatar_lista(cidades, cidades_por_linha):
     string_cidades = ''
     for i, cidade in enumerate(cidades):
         string_cidades += f'[{i}] - {cidade}, '

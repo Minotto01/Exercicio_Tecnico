@@ -2,6 +2,7 @@ from modulos import * # importei o modulo menu do repositorio com * para não pr
 from time import sleep
 import csv
 
+
 with open('DNIT-distancias.csv', 'r') as tabela:
     ler = csv.reader(tabela, delimiter=';')
     lista_linhas = list(ler)
@@ -18,7 +19,7 @@ while True: # loop para implementar funções as opções do menu
 
                 print('Digite o número correspondente das cidades de \npartida e destino, cidades disponíveis:'.center(60))
 
-                print(formatar_cidades(cidades, 3)) # função que mostra todas opções de cidades com seu indice
+                print(formatar_lista(cidades, 3)) # função que mostra todas opções de cidades com seu indice
                 print(separador())
                 valido = False
                 while True:
@@ -44,7 +45,7 @@ while True: # loop para implementar funções as opções do menu
                 print('Selecione o porte do caminhão a realizar o transporte:')
                 lista_porte = ['PEQUENO porte (Capacidade: 1 Tonelada)', 'MÉDIO porte (Capacidade: 4 Tonelada)', 'GRANDE porte (Capacidade: 10 Tonelada)']
                 preço_porte = [4.87, 11.92, 27.44] # preço por km rodado
-                print(formatar_cidades(lista_porte, 1))
+                print(formatar_lista(lista_porte, 1))
                 print(separador())
                 porte_válido = False
                 while not porte_válido:
@@ -92,7 +93,6 @@ while True: # loop para implementar funções as opções do menu
                         else: # se for 'n' reinicia
                             continue
 
-
         case 2:
             certeza_registro = menu(['Sim', 'Não, voltar'], 'DESEJA CADASTRAR UM TRANSPORTE?')
             match certeza_registro:
@@ -117,7 +117,7 @@ while True: # loop para implementar funções as opções do menu
                             else:
                                 break
                         print('Estas são as cidades disponíveis: ')
-                        print(formatar_cidades(cidades, 3))
+                        print(formatar_lista(cidades, 3))
                         print(separador())                   
                         
                         origem_indice = verif_int('Digite o número correspondente da cidade de ORIGEM: ')
@@ -174,8 +174,13 @@ while True: # loop para implementar funções as opções do menu
                                             distancias.append(distancia)
                                             y = x      
                                         cabeçalho('REGISTRADO COM SUCESSO')
-                                        print(f'O trajeto do registro é {trajeto_do_cadastro}, a distância a ser percorrida é {sum(distancias)}km, para transporte dos produtos: {item}, será necessário utilizar CAMINHÃO, para um gasto mínimo por km rodado. O valor total é VALOR TOTAL sendo o custo médio VALOR TOTAL/INDICE')    
-                                    case outro: # digite até estar certo
+                                        numeros_inteiros = [int(numero) for numero in distancias]
+                                        total = sum(numeros_inteiros)
+                                        print(f'O trajeto do registro é: ')  
+                                        print(formatar_lista(trajeto_do_cadastro, 3))
+                                        print(f'A distância total a ser percorrida é {total}km.') 
+                                        break
+                                    case outro:
                                         cabeçalho('ERRO: opção inválida seu cadastro foi salvo, tente novamente')
                                         break
                     registrar()
@@ -217,6 +222,34 @@ while True: # loop para implementar funções as opções do menu
 
                     for linhas in leitura:
                         print(linhas)
+                    
+                    continuar = menu(['Voltar ao menu', 'Encerrar sessão',], 'O que deseja fazer agora?')
+                    match continuar:
+                        case 1:
+                            continue
+                        case 2:
+                            confirm = input('Tem certeza que deseja sair? (S/N) ').lower()
+                            if confirm == 's':
+                                cabeçalho('Que pena! Até logo, volte sempre!')
+                                break
+                            elif confirm == 'n':
+                                continue
+                            else: # caso o usuario digite algo diferente de 's' ou 'n'
+                                valido = False
+                                while not valido: #loop continua em quanto for diferente de 's' ou 'n'
+                                    confirm2 = input('Não entendi, por favor digite (S/N): ').lower()
+                                    match confirm2: 
+                                        case 's':
+                                            cabeçalho('Que pena! Até logo, volte sempre!')
+                                            break
+                                        case 'n':
+                                            valido = True
+                                        case outro:
+                                            valido = False
+                                if  confirm2 == 's': # se confirm2 for 's' fecha o programa
+                                    break
+                                else: # se for 'n' reinicia
+                                    continue
             except:
                 print(separador())
                 print('Ainda não há um registro para ser acessado'.center(60))
@@ -226,27 +259,28 @@ while True: # loop para implementar funções as opções do menu
                         continue
                     case 2:
                         confirm = input('Tem certeza que deseja sair? (S/N) ').lower()
-            if confirm == 's':
-                cabeçalho('Que pena! Até logo, volte sempre!')
-                break
-            elif confirm == 'n':
-                continue
-            else: # caso o usuario digite algo diferente de 's' ou 'n'
-                valido = False
-                while not valido: #loop continua em quanto for diferente de 's' ou 'n'
-                    confirm2 = input('Não entendi, por favor digite (S/N): ').lower()
-                    match confirm2: 
-                        case 's':
+                        if confirm == 's':
                             cabeçalho('Que pena! Até logo, volte sempre!')
                             break
-                        case 'n':
-                            valido = True
-                        case outro:
+                        elif confirm == 'n':
+                            continue
+                        else: # caso o usuario digite algo diferente de 's' ou 'n'
                             valido = False
-                if  confirm2 == 's': # se confirm2 for 's' fecha o programa
-                    break
-                else: # se for 'n' reinicia
-                    continue
+                            while not valido: #loop continua em quanto for diferente de 's' ou 'n'
+                                confirm2 = input('Não entendi, por favor digite (S/N): ').lower()
+                                match confirm2: 
+                                    case 's':
+                                        cabeçalho('Que pena! Até logo, volte sempre!')
+                                        break
+                                    case 'n':
+                                        valido = True
+                                    case outro:
+                                        valido = False
+                            if  confirm2 == 's': # se confirm2 for 's' fecha o programa
+                                break
+                            else: # se for 'n' reinicia
+                                continue
+                break
         case 4:
             confirm = input('Tem certeza que deseja sair? (S/N) ').lower()
             if confirm == 's':
